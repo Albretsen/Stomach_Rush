@@ -13,6 +13,14 @@ public class CameraCollider : MonoBehaviour {
     private Transform rightCollider;
     private Vector3 cameraPos;
 
+    public float targetAspect;
+
+    public Transform target;
+
+    public float smoothSpeed = 0.125f;
+    float previousYValue = 99;
+    public Vector3 offset;
+
     // Use this for initialization
     void Start()
     {
@@ -60,11 +68,41 @@ public class CameraCollider : MonoBehaviour {
 
         //GENERATE RANDOM START AREA
 
+
+        float windowAspect = (float)Screen.width / (float)Screen.height;
+        float scaleHeight = windowAspect / targetAspect;
+        Camera camera = GetComponent<Camera>();
+
+        if (scaleHeight < 1.0f)
+        {
+            camera.orthographicSize = camera.orthographicSize / scaleHeight;
+        }
     }
 
-    void Update()
+    //void Update()
+    //{
+        //transform.position = transform.position - (new Vector3(0, 0.1f*Time.deltaTime*100, 0));
+    //}
+
+    void FixedUpdate()
     {
-        transform.position = transform.position - (new Vector3(0, 0.1f*Time.deltaTime*100, 0));
+
+        if (target.position.y < transform.position.y)
+        {
+            Vector3 desiredPosition = target.position + offset;
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+            smoothedPosition.z = -10;
+            smoothedPosition.x = 0;
+            transform.position = smoothedPosition;
+
+            previousYValue = target.position.y;
+        }
+        else
+        {
+            transform.position = transform.position - (new Vector3(0, 0.1f * Time.deltaTime * 100, 0));
+        }
+
+        //transform.LookAt(target);
     }
 
 }
