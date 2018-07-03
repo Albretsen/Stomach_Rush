@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
     Rigidbody2D rb;
     Camera cam;
     public float speed;
+    public GameObject point;
 
 	// Use this for initialization
 	void Start () {
@@ -32,27 +33,41 @@ public class PlayerController : MonoBehaviour {
 
     void Move(Vector3 pos)
     {
-        Vector3 rbPos = new Vector3(rb.position.x, rb.position.y, 0);
+        Vector3 rbPos = new Vector3(rb.position.x, rb.position.y-10, 0);
+        point.transform.position = new Vector3(pos.x, pos.y + 10, 0);
         var heading = (pos - rbPos).normalized;
-        var distance = heading.magnitude*speed;
-        var rawHeading = pos - rbPos;
-        var rawDistance = rawHeading.magnitude;
-        if(rawDistance > 10.015f)
+
+        var distance = (transform.position - new Vector3(pos.x, pos.y + 10, 0)).magnitude;
+        if (distance > 1)
+        {
+            rb.velocity = heading * distance * 2;
+        }
+        
+
+        /*Vector3 rbPos = new Vector3(rb.position.x, rb.position.y - 10, 0);
+        point.transform.position = new Vector3(pos.x, pos.y + 10, 0);
+        var heading = (pos - rbPos).normalized;
+        var distance = heading.magnitude * speed;
+
+        if (distance > 20)
         {
             rb.velocity = heading * distance;
-        }
+        }*/
+
+
     }
 
     void MoveMobile(Vector3 pos)
     {
-        Vector3 rbPos = new Vector3(rb.position.x, rb.position.y, 0);
+        Vector3 rbPos = new Vector3(rb.position.x, rb.position.y - 10, 0);
+        point.transform.position = new Vector3(pos.x, pos.y + 10, 0);
         var heading = (pos - rbPos).normalized;
-        var distance = heading.magnitude * speed;
-        var rawHeading = pos - rbPos;
-        var rawDistance = rawHeading.magnitude;
-        if (rawDistance > 10.015f)
+
+        var distance = (transform.position - new Vector3(pos.x, pos.y + 10, 0)).magnitude;
+        if (distance > 1)
         {
-            rb.velocity = heading * distance;
+            rb.velocity = heading * distance * 2;
         }
+
     }
 }
