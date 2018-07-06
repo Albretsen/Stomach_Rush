@@ -23,8 +23,7 @@ public class EnemyController : MonoBehaviour {
 
     void Move()
     {
-        rb.AddForce(direction * speed);
-        //rb.velocity = new Vector3(Mathf.Clamp(direction.x * speed, 5, 15), Mathf.Clamp(direction.y * speed, 5, 15), 0);
+        rb.AddForce(direction * speed, ForceMode2D.Impulse);
     }
 
     void ChangeDirection(Vector3 col)
@@ -37,7 +36,7 @@ public class EnemyController : MonoBehaviour {
         Vector3 contact = col.contacts[0].point;
 
         Vector3 dir = (transform.position - contact).normalized;
-        direction = dir + new Vector3(Random.Range(-1f,1f), Random.Range(-1f, 1f),0);
+        direction = dir;
         Debug.DrawRay(transform.position, dir * speed, Color.green, 3);
     }
 }

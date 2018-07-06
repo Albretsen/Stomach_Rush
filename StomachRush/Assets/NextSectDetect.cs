@@ -16,6 +16,7 @@ public class NextSectDetect : MonoBehaviour {
         if(col.name == "Player")
         {
             levelGenerator.LoadNext();
+            Destroy(this);
         }
     }
 }
